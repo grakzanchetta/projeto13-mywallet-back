@@ -14,18 +14,18 @@ dotenv.config();
 
 const port = process.env.PORT || 5000
 
-app.post("/sign-up", async (request, response) => {
+app.post("/signup", async (request, response) => {
     const {name, email, password, confirmPassword} = request.body
 
     const signUpSchema = joi.object({
         name: joi.string().required(),
-        email: joi.string().required(),
+        email: joi.string().email().required(),
         password: joi.string().required(),
         confirmPassword: joi.ref('password')
     })
     const { error } = signUpSchema.validate(request.body, {abortEarly: false});
     if(error){
-        return response.sendStatus(422).send(chalk.bold.red('Erro ao validar o cadastro!'))
+        return response.sendStatus(422)
     }
     try {
         const SALT = 10;
